@@ -1,11 +1,9 @@
-CREATE TABLE msme (
-    reg_number VARCHAR(255) NOT NULL UNIQUE
-);
+USE my_database;
+CREATE TABLE IF NOT EXISTS MSME2(reg_Number VARCHAR(255), Company_Name VARCHAR(255));
 
-INSERT INTO msme (reg_number) VALUES 
-('MSME12345'),
-('MSME67890'),
-('MSME11223'),
-('MSME44556'),
-('MSME77889');
+INSERT INTO MSME2(reg_Number, Company_Name) VALUES('1234567890', 'ABC');
+
+SELECT * FROM MSME2;
+
+
 
