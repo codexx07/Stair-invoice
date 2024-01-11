@@ -21,6 +21,7 @@ export interface Invoice {
   clientAddress: string
   clientAddress2: string
   clientCountry: string
+  msmeRegNumber: string
 
   invoiceTitleLabel: string
   invoiceTitle: string

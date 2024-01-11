@@ -183,6 +183,12 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
               onChange={(value) => handleChange('companyCountry', value)}
               pdfMode={pdfMode}
             />
+            <EditableInput
+              placeholder="MSME Registration Number"
+              value={invoice.msmeRegNumber}
+              onChange={(value) => handleChange('msmeRegNumber', value)}
+              pdfMode={pdfMode}
+            />
           </View>
           <View className="w-50" pdfMode={pdfMode}>
             <EditableInput

@@ -19,7 +19,8 @@ export const initialInvoice: Invoice = {
   clientName: '',
   clientAddress: '',
   clientAddress2: '',
-  clientCountry: 'United States',
+  clientCountry: 'India',
+  msmeRegNumber: 'MSME Reg. No.:',
   invoiceTitleLabel: 'Invoice#',
   invoiceTitle: '',
   invoiceDateLabel: 'Invoice Date',
@@ -46,5 +47,5 @@ export const initialInvoice: Invoice = {
   notesLabel: 'Notes',
   notes: 'It was great doing business with you.',
   termLabel: 'Terms & Conditions',
-  term: 'Please make the payment by the due date.',
+  term: 'Please make the payment.',
 }
