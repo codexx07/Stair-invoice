@@ -28,11 +28,12 @@ interface Props {
   pdfMode?: boolean
   onChange?: (invoice: Invoice) => void
 }
-const [msmeRegNumberValid, setMsmeRegNumberValid] = useState(false);
+
 const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
   const [invoice, setInvoice] = useState<Invoice>(data ? { ...data } : { ...initialInvoice })
   const [subTotal, setSubTotal] = useState<number>()
   const [saleTax, setSaleTax] = useState<number>()
+  const [msmeRegNumberValid, setMsmeRegNumberValid] = useState(false);
 
   const dateFormat = 'MMM dd, yyyy'
   const invoiceDate = invoice.invoiceDate !== '' ? new Date(invoice.invoiceDate) : new Date()
