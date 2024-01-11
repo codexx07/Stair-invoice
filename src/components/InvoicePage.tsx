@@ -1,4 +1,5 @@
 import React, { FC, useState, useEffect } from 'react'
+import axios from 'axios'; // or use fetch
 import { Invoice, ProductLine } from '../data/types'
 import { initialInvoice, initialProductLine } from '../data/initialData'
 import EditableInput from './EditableInput'
@@ -28,7 +29,7 @@ interface Props {
   pdfMode?: boolean
   onChange?: (invoice: Invoice) => void
 }
-
+const [msmeRegNumberValid, setMsmeRegNumberValid] = useState(false);
 const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
   const [invoice, setInvoice] = useState<Invoice>(data ? { ...data } : { ...initialInvoice })
   const [subTotal, setSubTotal] = useState<number>()
@@ -45,7 +46,7 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
     invoiceDueDate.setDate(invoiceDueDate.getDate() + 30)
   }
 
-  const handleChange = (name: keyof Invoice, value: string | number) => {
+  const handleChange = async (name: keyof Invoice, value: string | number) => {
     if (name !== 'productLines') {
       const newInvoice = { ...invoice }
 
@@ -54,6 +55,25 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
       } else if (name !== 'logoWidth' && typeof value === 'string') {
         newInvoice[name] = value
       }
+
+      if (name === 'msmeRegNumber' && typeof value === 'string') {
+        newInvoice[name] = value;
+  
+        // Make API call to validate msmeRegNumber
+        try {
+          const response = await axios.get(`https://your-api-url/validate?msmeRegNumber=${value}`);
+          setMsmeRegNumberValid(response.data.isValid); // assuming response has a boolean isValid property
+        } catch (error) {
+          console.error(error);
+          setMsmeRegNumberValid(false);
+        }
+      } else if (name === 'logoWidth' && typeof value === 'number') {
+        newInvoice[name] = value;
+      } else if (name !== 'logoWidth' && typeof value === 'string') {
+        newInvoice[name] = value;
+      }
+
+    
 
       setInvoice(newInvoice)
     }
@@ -189,6 +209,7 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
               onChange={(value) => handleChange('msmeRegNumber', value)}
               pdfMode={pdfMode}
             />
+            {msmeRegNumberValid && <GreenIcon />}
           </View>
           <View className="w-50" pdfMode={pdfMode}>
             <EditableInput

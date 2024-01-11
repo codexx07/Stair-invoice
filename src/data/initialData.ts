@@ -14,7 +14,7 @@ export const initialInvoice: Invoice = {
   name: '',
   companyAddress: '',
   companyAddress2: '',
-  companyCountry: 'United States',
+  companyCountry: 'India',
   billTo: 'Bill To:',
   clientName: '',
   clientAddress: '',
