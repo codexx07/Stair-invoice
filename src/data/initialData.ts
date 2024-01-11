@@ -4,6 +4,7 @@ export const initialProductLine: ProductLine = {
   description: '',
   quantity: '1',
   rate: '0.00',
+  discount: '0.00',
 }
 
 export const initialInvoice: Invoice = {
@@ -36,9 +37,10 @@ export const initialInvoice: Invoice = {
   productLineQuantityDiscount: 'Discount',
   productLines: [
     {
-      description: 'Brochure Design',
+      description: 'Stair Merchandise',
       quantity: '2',
       rate: '100.00',
+      discount: '0.00',
     },
     { ...initialProductLine },
     { ...initialProductLine },

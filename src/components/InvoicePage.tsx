@@ -350,6 +350,14 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
               pdfMode={pdfMode}
             />
           </View>
+          <View className="w-17 p-4-8" pdfMode={pdfMode}>
+            <EditableInput
+              className="white bold right"
+              value={invoice.productLineQuantityDiscount}
+              onChange={(value) => handleChange('productLineQuantityDiscount', value)}
+              pdfMode={pdfMode}
+            />
+          </View>
           <View className="w-18 p-4-8" pdfMode={pdfMode}>
             <EditableInput
               className="white bold right"
@@ -388,6 +396,14 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
                   className="dark right"
                   value={productLine.rate}
                   onChange={(value) => handleProductLineChange(i, 'rate', value)}
+                  pdfMode={pdfMode}
+                />
+              </View>
+              <View className="w-17 p-4-8 pb-10" pdfMode={pdfMode}>
+                <EditableInput
+                  className="dark right"
+                  value={productLine.discount}
+                  onChange={(value) => handleProductLineChange(i, 'discount', value)}
                   pdfMode={pdfMode}
                 />
               </View>
@@ -475,21 +491,6 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
           </View>
         </View>
 
-        <View className="mt-20" pdfMode={pdfMode}>
-          <EditableInput
-            className="bold w-100"
-            value={invoice.notesLabel}
-            onChange={(value) => handleChange('notesLabel', value)}
-            pdfMode={pdfMode}
-          />
-          <EditableTextarea
-            className="w-100"
-            rows={2}
-            value={invoice.notes}
-            onChange={(value) => handleChange('notes', value)}
-            pdfMode={pdfMode}
-          />
-        </View>
         <View className="mt-20" pdfMode={pdfMode}>
           <EditableInput
             className="bold w-100"

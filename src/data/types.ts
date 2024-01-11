@@ -4,6 +4,7 @@ export interface ProductLine {
   description: string
   quantity: string
   rate: string
+  discount: string
 }
 
 export interface Invoice {
