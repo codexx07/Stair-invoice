@@ -14,7 +14,9 @@ export interface Invoice {
   name: string
   companyAddress: string
   companyAddress2: string
+  country: string
   companyCountry: string
+  state: string
 
   billTo: string
   clientName: string

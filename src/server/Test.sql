@@ -1,0 +1,11 @@
+CREATE TABLE msme (
+    reg_number VARCHAR(255) NOT NULL UNIQUE
+);
+
+INSERT INTO msme (reg_number) VALUES 
+('MSME12345'),
+('MSME67890'),
+('MSME11223'),
+('MSME44556'),
+('MSME77889');
+

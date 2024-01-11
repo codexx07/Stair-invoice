@@ -6,7 +6,6 @@ import EditableSelect from './EditableSelect'
 import EditableTextarea from './EditableTextarea'
 import EditableCalendarInput from './EditableCalendarInput'
 import EditableFileImage from './EditableFileImage'
-import countryList from '../data/countryList'
 import Document from './Document'
 import Page from './Page'
 import View from './View'
@@ -55,7 +54,13 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
         newInvoice[name] = value;
 
         // Make API call to validate msmeRegNumber
-        fetch(`https://your-api-url/validate?msmeRegNumber=${value}`)
+        fetch(`http://localhost:3000/check-msme`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ msmeRegNumber: value }),
+        })
           .then(response => response.json())
           .then(data => {
             setMsmeRegNumberValid(data.isValid); // assuming response has a boolean isValid property
@@ -161,7 +166,7 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
           <View className="w-50" pdfMode={pdfMode}>
             <EditableFileImage
               className="logo"
-              placeholder="Your Logo"
+              placeholder="Company Logo"
               value={invoice.logo}
               width={invoice.logoWidth}
               pdfMode={pdfMode}
@@ -170,33 +175,27 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
             />
             <EditableInput
               className="fs-20 bold"
-              placeholder="Your Company"
+              placeholder="Company Name"
               value={invoice.companyName}
               onChange={(value) => handleChange('companyName', value)}
               pdfMode={pdfMode}
             />
             <EditableInput
-              placeholder="Your Name"
+              placeholder="GSTIN"
               value={invoice.name}
               onChange={(value) => handleChange('name', value)}
               pdfMode={pdfMode}
             />
             <EditableInput
-              placeholder="Company's Address"
+              placeholder="State"
               value={invoice.companyAddress}
               onChange={(value) => handleChange('companyAddress', value)}
               pdfMode={pdfMode}
             />
             <EditableInput
-              placeholder="City, State Zip"
+              placeholder="PAN"
               value={invoice.companyAddress2}
               onChange={(value) => handleChange('companyAddress2', value)}
-              pdfMode={pdfMode}
-            />
-            <EditableSelect
-              options={countryList}
-              value={invoice.companyCountry}
-              onChange={(value) => handleChange('companyCountry', value)}
               pdfMode={pdfMode}
             />
             <EditableInput
@@ -227,29 +226,36 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
               pdfMode={pdfMode}
             />
             <EditableInput
-              placeholder="Your Client's Name"
+              placeholder="Customer Name"
               value={invoice.clientName}
               onChange={(value) => handleChange('clientName', value)}
               pdfMode={pdfMode}
             />
             <EditableInput
-              placeholder="Client's Address"
+              placeholder="Billing Address"
               value={invoice.clientAddress}
               onChange={(value) => handleChange('clientAddress', value)}
               pdfMode={pdfMode}
             />
             <EditableInput
-              placeholder="City, State Zip"
+              placeholder="Shipping Address"
               value={invoice.clientAddress2}
               onChange={(value) => handleChange('clientAddress2', value)}
               pdfMode={pdfMode}
             />
-            <EditableSelect
-              options={countryList}
-              value={invoice.clientCountry}
-              onChange={(value) => handleChange('clientCountry', value)}
+            <EditableInput
+              placeholder="Country of Supply"
+              value={invoice.country}
+              onChange={(value) => handleChange('clientAddress2', value)}
               pdfMode={pdfMode}
             />
+            <EditableInput
+              placeholder="State of Supply"
+              value={invoice.state}
+              onChange={(value) => handleChange('clientAddress2', value)}
+              pdfMode={pdfMode}
+            />
+
           </View>
           <View className="w-45" pdfMode={pdfMode}>
             <View className="flex mb-5" pdfMode={pdfMode}>
