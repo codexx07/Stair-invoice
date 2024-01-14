@@ -8,9 +8,11 @@ interface Props {
   value?: string
   onChange?: (value: string) => void
   pdfMode?: boolean
+  onFocus?: () => void;  // Add this line
+  onBlur?: () => void; 
 }
 
-const EditableInput: FC<Props> = ({ className, placeholder, value, onChange, pdfMode }) => {
+const EditableInput: FC<Props> = ({ className, placeholder, value, onChange, pdfMode, onFocus, onBlur }) => {
   return (
     <>
       {pdfMode ? (
@@ -22,6 +24,8 @@ const EditableInput: FC<Props> = ({ className, placeholder, value, onChange, pdf
           placeholder={placeholder || ''}
           value={value || ''}
           onChange={onChange ? (e) => onChange(e.target.value) : undefined}
+          onFocus={onFocus}  // Add this line
+          onBlur={onBlur}
         />
       )}
     </>

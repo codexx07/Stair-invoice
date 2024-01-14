@@ -33,6 +33,7 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
   const [subTotal, setSubTotal] = useState<number>()
   const [saleTax, setSaleTax] = useState<number>()
   const [msmeRegNumberValid, setMsmeRegNumberValid] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
 
   useEffect(() => {
     window.addEventListener('beforeunload', clearData);
@@ -233,6 +234,8 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
                 placeholder="MSME Registration Number"
                 value={invoice.msmeRegNumber}
                 onChange={(value) => handleChange('msmeRegNumber', value)}
+                onFocus={() => setIsFocused(true)}
+                onBlur={() => setIsFocused(false)}
                 pdfMode={pdfMode}
               />
               {!pdfMode && (msmeRegNumberValid ? 
@@ -248,7 +251,7 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
                 }}>
                   &#10003;
                 </div> :
-                <div style={{ 
+                isFocused && <div style={{ 
                   color: 'red', 
                   backgroundColor: '#FFD2D2', 
                   borderRadius: '50%', 
