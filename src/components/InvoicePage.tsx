@@ -34,6 +34,20 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
   const [saleTax, setSaleTax] = useState<number>()
   const [msmeRegNumberValid, setMsmeRegNumberValid] = useState(false);
 
+  useEffect(() => {
+    window.addEventListener('beforeunload', clearData);
+
+    return () => {
+      window.removeEventListener('beforeunload', clearData);
+    };
+  }, []);
+
+  function clearData() {
+    localStorage.clear(); // Clear local storage
+    sessionStorage.clear(); // Clear session storage
+    // Add any other cleanup code here
+  }
+
   const dateFormat = 'MMM dd, yyyy'
   const invoiceDate = invoice.invoiceDate !== '' ? new Date(invoice.invoiceDate) : new Date()
   const invoiceDueDate =
@@ -53,29 +67,31 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
       if (name === 'msmeRegNumber' && typeof value === 'string') {
         newInvoice[name] = value;
 
-        // Make API call to validate msmeRegNumber
-        fetch(`http://localhost:3000/check-msme`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ msmeRegNumber: value }),
-        })
-          .then(response => response.json())
-          .then(data => {
-            setMsmeRegNumberValid(data.isValid); // assuming response has a boolean isValid property
+        // Check if length of msmeRegNumber is 8
+        if (value.length === 8) {
+          // Make API call to validate msmeRegNumber
+          fetch(`http://localhost:3001/check-msme`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ msmeRegNumber: value }),
           })
-          .catch(error => {
-            console.error(error);
-            setMsmeRegNumberValid(false);
-          });
+            .then(response => response.json())
+            .then(data => {
+              setMsmeRegNumberValid(data.isValid); // assuming response has a boolean isValid property
+            })
+            .catch(error => {
+              console.error(error);
+              setMsmeRegNumberValid(false);
+            });
+        }
       } else if (name === 'logoWidth' && typeof value === 'number') {
         newInvoice[name] = value;
       } else if (name !== 'logoWidth' && typeof value === 'string') {
         newInvoice[name] = value;
       }
-    
-      
+
       setInvoice(newInvoice)
     }
   }
@@ -157,6 +173,20 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
     }
   }, [onChange, invoice])
 
+  useEffect(() => {
+    const match = invoice.taxLabel.match(/(\d+)%/)
+    const taxRate = match ? parseFloat(match[1]) : 0
+    const saleTax = subTotal ? (subTotal * taxRate) / 100 : 0
+
+    setSaleTax(saleTax)
+  }, [subTotal, invoice.taxLabel])
+
+  useEffect(() => {
+    if (onChange) {
+      onChange(invoice)
+    }
+  }, [onChange, invoice])
+
   return (
     <Document pdfMode={pdfMode}>
       <Page className="invoice-wrapper" pdfMode={pdfMode}>
@@ -198,12 +228,28 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
               onChange={(value) => handleChange('companyAddress2', value)}
               pdfMode={pdfMode}
             />
-            <EditableInput
-              placeholder="MSME Registration Number"
-              value={invoice.msmeRegNumber}
-              onChange={(value) => handleChange('msmeRegNumber', value)}
-              pdfMode={pdfMode}
-            />
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <EditableInput
+                placeholder="MSME Registration Number"
+                value={invoice.msmeRegNumber}
+                onChange={(value) => handleChange('msmeRegNumber', value)}
+                pdfMode={pdfMode}
+              />
+              {!pdfMode && msmeRegNumberValid && 
+                <div style={{ 
+                  color: 'green', 
+                  backgroundColor: '#DFF2BF', 
+                  borderRadius: '50%', 
+                  width: '20px', 
+                  height: '20px', 
+                  display: 'flex', 
+                  justifyContent: 'center', 
+                  alignItems: 'center' 
+                }}>
+                  &#10003;
+                </div>
+              }
+            </div>
             
           </View>
           <View className="w-50" pdfMode={pdfMode}>
@@ -350,6 +396,30 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
               pdfMode={pdfMode}
             />
           </View>
+          <View className="w-17 p-4-8" pdfMode={pdfMode}>
+            <EditableInput
+              className="white bold right"
+              value={invoice.productLineQuantityDiscount}
+              onChange={(value) => handleChange('productLineQuantityDiscount', value)}
+              pdfMode={pdfMode}
+            />
+          </View>
+          <View className="w-17 p-4-8" pdfMode={pdfMode}>
+            <EditableInput
+              className="white bold right"
+              value={invoice.productLineQuantityCGST}
+              onChange={(value) => handleChange('productLineQuantityCGST', value)}
+              pdfMode={pdfMode}
+            />
+          </View>
+          {/* <View className="w-17 p-4-8" pdfMode={pdfMode}>
+            <EditableInput
+              className="white bold right"
+              value={invoice.productLineQuantitySGST}
+              onChange={(value) => handleChange('productLineQuantitySGST', value)}
+              pdfMode={pdfMode}
+            />
+          </View> */}
           <View className="w-18 p-4-8" pdfMode={pdfMode}>
             <EditableInput
               className="white bold right"
@@ -388,6 +458,14 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
                   className="dark right"
                   value={productLine.rate}
                   onChange={(value) => handleProductLineChange(i, 'rate', value)}
+                  pdfMode={pdfMode}
+                />
+              </View>
+              <View className="w-17 p-4-8 pb-10" pdfMode={pdfMode}>
+                <EditableInput
+                  className="dark right"
+                  value={productLine.discount}
+                  onChange={(value) => handleProductLineChange(i, 'discount', value)}
                   pdfMode={pdfMode}
                 />
               </View>
@@ -475,21 +553,6 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
           </View>
         </View>
 
-        <View className="mt-20" pdfMode={pdfMode}>
-          <EditableInput
-            className="bold w-100"
-            value={invoice.notesLabel}
-            onChange={(value) => handleChange('notesLabel', value)}
-            pdfMode={pdfMode}
-          />
-          <EditableTextarea
-            className="w-100"
-            rows={2}
-            value={invoice.notes}
-            onChange={(value) => handleChange('notes', value)}
-            pdfMode={pdfMode}
-          />
-        </View>
         <View className="mt-20" pdfMode={pdfMode}>
           <EditableInput
             className="bold w-100"

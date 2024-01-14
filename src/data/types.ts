@@ -4,6 +4,9 @@ export interface ProductLine {
   description: string
   quantity: string
   rate: string
+  discount: string
+  CGST: string
+  SGST: string
 }
 
 export interface Invoice {
@@ -37,6 +40,8 @@ export interface Invoice {
   productLineQuantityRate: string
   productLineQuantityAmount: string
   productLineQuantityDiscount: string
+  productLineQuantityCGST: string
+  productLineQuantitySGST: string
 
   productLines: ProductLine[]
 
