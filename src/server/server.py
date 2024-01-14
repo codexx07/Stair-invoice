@@ -15,14 +15,14 @@ def check_msme():
                                   database='my_database')
     cursor = cnx.cursor()
 
-    query = ("SELECT * FROM MSME2 WHERE reg_Number = \'{0}\'".format)(msmeregnumber)
+    query = "SELECT * FROM MSME2 WHERE reg_Number = %s"
     print(query)
     cursor.execute(query, (msmeregnumber,))
 
     isvalid = False
     if cursor.fetchone() is not None:
         isvalid = True
-
+    print(isvalid)
     cursor.close()
     cnx.close()
 

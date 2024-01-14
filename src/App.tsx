@@ -18,6 +18,7 @@ function App() {
 
   return (
     <div className="app">
+      {/* <img src="%PUBLIC_URL%/logo.svg" alt="logo" className="logo" /> */}
       <h1 className="center fs-30">Stair Invoice Generator</h1>
       <InvoicePage data={data} onChange={onInvoiceUpdated} />
     </div>
