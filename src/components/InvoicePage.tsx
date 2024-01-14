@@ -235,7 +235,7 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
                 onChange={(value) => handleChange('msmeRegNumber', value)}
                 pdfMode={pdfMode}
               />
-              {!pdfMode && msmeRegNumberValid && 
+              {!pdfMode && (msmeRegNumberValid ? 
                 <div style={{ 
                   color: 'green', 
                   backgroundColor: '#DFF2BF', 
@@ -247,8 +247,20 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
                   alignItems: 'center' 
                 }}>
                   &#10003;
+                </div> :
+                <div style={{ 
+                  color: 'red', 
+                  backgroundColor: '#FFD2D2', 
+                  borderRadius: '50%', 
+                  width: '20px', 
+                  height: '20px', 
+                  display: 'flex', 
+                  justifyContent: 'center', 
+                  alignItems: 'center' 
+                }}>
+                  &#10060;
                 </div>
-              }
+              )}
             </div>
             
           </View>
