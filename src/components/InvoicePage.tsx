@@ -53,29 +53,31 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
       if (name === 'msmeRegNumber' && typeof value === 'string') {
         newInvoice[name] = value;
 
-        // Make API call to validate msmeRegNumber
-        fetch(`http://localhost:3000/check-msme`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ msmeRegNumber: value }),
-        })
-          .then(response => response.json())
-          .then(data => {
-            setMsmeRegNumberValid(data.isValid); // assuming response has a boolean isValid property
+        // Check if length of msmeRegNumber is 8
+        if (value.length === 8) {
+          // Make API call to validate msmeRegNumber
+          fetch(`http://localhost:3001/check-msme`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ msmeRegNumber: value }),
           })
-          .catch(error => {
-            console.error(error);
-            setMsmeRegNumberValid(false);
-          });
+            .then(response => response.json())
+            .then(data => {
+              setMsmeRegNumberValid(data.isValid); // assuming response has a boolean isValid property
+            })
+            .catch(error => {
+              console.error(error);
+              setMsmeRegNumberValid(false);
+            });
+        }
       } else if (name === 'logoWidth' && typeof value === 'number') {
         newInvoice[name] = value;
       } else if (name !== 'logoWidth' && typeof value === 'string') {
         newInvoice[name] = value;
       }
-    
-      
+
       setInvoice(newInvoice)
     }
   }

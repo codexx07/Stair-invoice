@@ -1,7 +1,9 @@
 USE my_database;
 CREATE TABLE IF NOT EXISTS MSME2(reg_Number VARCHAR(255), Company_Name VARCHAR(255));
 
-INSERT INTO MSME2(reg_Number, Company_Name) VALUES('1234567890', 'ABC');
+INSERT INTO MSME2(reg_Number, Company_Name) VALUES('12345678', 'ABC');
+
+
 
 SELECT * FROM MSME2;
 
