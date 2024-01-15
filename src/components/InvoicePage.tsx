@@ -427,14 +427,14 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
               pdfMode={pdfMode}
             />
           </View>
-          {/* <View className="w-17 p-4-8" pdfMode={pdfMode}>
+          <View className="w-17 p-4-8" pdfMode={pdfMode}>
             <EditableInput
               className="white bold right"
               value={invoice.productLineQuantitySGST}
               onChange={(value) => handleChange('productLineQuantitySGST', value)}
               pdfMode={pdfMode}
             />
-          </View> */}
+          </View>
           <View className="w-18 p-4-8" pdfMode={pdfMode}>
             <EditableInput
               className="white bold right"
@@ -481,6 +481,22 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
                   className="dark right"
                   value={productLine.discount}
                   onChange={(value) => handleProductLineChange(i, 'discount', value)}
+                  pdfMode={pdfMode}
+                />
+              </View>
+              <View className="w-17 p-4-8 pb-10" pdfMode={pdfMode}>
+                <EditableInput
+                  className="dark right"
+                  value={productLine.CGST}
+                  onChange={(value) => handleProductLineChange(i, 'CGST', value)}
+                  pdfMode={pdfMode}
+                />
+              </View>
+              <View className="w-17 p-4-8 pb-10" pdfMode={pdfMode}>
+                <EditableInput
+                  className="dark right"
+                  value={productLine.SGST}
+                  onChange={(value) => handleProductLineChange(i, 'SGST', value)}
                   pdfMode={pdfMode}
                 />
               </View>
