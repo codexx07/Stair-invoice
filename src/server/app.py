@@ -22,7 +22,7 @@ cursor = cnx.cursor()
 @app.route('/check-msme', methods=['GET'])
 def check_msme():
     try:
-        reg_Number = request.json.get('msmeRegNumber')
+        reg_Number = request.args.get('msmeRegNumber')
         print(f"Received reg_Number: {reg_Number}")
 
         # # Check if the result is in the database
@@ -38,24 +38,24 @@ def check_msme():
         # else:
         #     print("No record found in database")
         
-        headers = {
-            'api-key': 'your-api-key',
-            'account-id': 'your-account-id'
-        }
-        data = {
-            "task_id": "74f4c926-250c-43ca-9c53-453e87ceacd1",
-            "group_id": "8e16424a-58fc-4ba4-ab20-5bc8e7c3c41e",
-            "data": {
-                "uam_number": reg_Number
-            }
-        }
-        response = requests.post('https://eve.idfy.com/v3/tasks/async/verify_with_source/udyam_aadhaar', headers=headers, data=json.dumps(data))
-        print(f"External API response status: {response.status_code}")
+        # headers = {
+        #     'api-key': 'your-api-key',
+        #     'account-id': 'your-account-id'
+        # }
+        # data = {
+        #     "task_id": "74f4c926-250c-43ca-9c53-453e87ceacd1",
+        #     "group_id": "8e16424a-58fc-4ba4-ab20-5bc8e7c3c41e",
+        #     "data": {
+        #         "uam_number": reg_Number
+        #     }
+        # }
+        # response = requests.post('https://eve.idfy.com/v3/tasks/async/verify_with_source/udyam_aadhaar', headers=headers, data=json.dumps(data))
+        # print(f"External API response status: {response.status_code}")
 
-        # Check the API response
-        if response.status_code == 200 and response.text.strip():
-            data = response.json()
-            print(f"External API response data: {data}")
+        # # Check the API response
+        # if response.status_code == 200 and response.text.strip():
+        #     data = response.json()
+        #     print(f"External API response data: {data}")
 
         #     # Store the result in the database, regardless of whether it's valid
         #     insert_query = "INSERT INTO msme (reg_Number, is_valid) VALUES (%s, %s)"

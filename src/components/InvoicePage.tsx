@@ -72,12 +72,11 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
         const pattern = /^UDYAM-MH-\d{2}-\d{7}$/;
         if (pattern.test(value)) {
           // Make API call to validate msmeRegNumber
-          fetch(`http://localhost:3001/check-msme`, {
-            method: 'POST',
+          fetch(`http://localhost:3001/check-msme?msmeRegNumber=${value}`, {
+            method: 'GET',
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ msmeRegNumber: value }),
           })
             .then(response => response.json())
             .then(data => {
