@@ -1,5 +1,5 @@
 {
-  "name": "invo-generator",
+  "name": "@stair/invoice-generator",
   "version": "0.2.1",
   "private": true,
   "dependencies": {

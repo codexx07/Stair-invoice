@@ -2,7 +2,6 @@ import React, { FC, useState, useEffect } from 'react'
 import { Invoice, ProductLine } from '../data/types'
 import { initialInvoice, initialProductLine } from '../data/initialData'
 import EditableInput from './EditableInput'
-import EditableSelect from './EditableSelect'
 import EditableTextarea from './EditableTextarea'
 import EditableCalendarInput from './EditableCalendarInput'
 import EditableFileImage from './EditableFileImage'
@@ -32,7 +31,6 @@ interface Props {
 const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
   const [invoice, setInvoice] = useState<Invoice>(data ? { ...data } : { ...initialInvoice })
   const [subTotal, setSubTotal] = useState<number>()
-  const [saleTax, setSaleTax] = useState<number>()
   const [msmeRegNumberValid, setMsmeRegNumberValid] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const [totalTax, setTotalTax] = useState(0);
