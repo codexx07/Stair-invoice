@@ -341,15 +341,18 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
             <EditableInput
               placeholder="Country of Supply"
               value={invoice.country}
-              onChange={(value) => handleChange('clientAddress2', value)}
+              onChange={(value) => handleChange('country', value)}
               pdfMode={pdfMode}
             />
+            <div style={{ display: 'flex',flexDirection: 'row', alignItems: 'center' }}>
+            <Text className="bold" pdfMode={pdfMode}>State of Supply: </Text>
             <EditableInput
               placeholder="State of Supply"
               value={invoice.state}
-              onChange={(value) => handleChange('clientAddress2', value)}
+              onChange={(value) => handleChange('state', value)}
               pdfMode={pdfMode}
             />
+            </div>
 
           </View>
           <View className="w-45" pdfMode={pdfMode}>
