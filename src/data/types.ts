@@ -64,6 +64,8 @@ export interface Invoice {
   notes: string
   termLabel: string
   term: string
+  footerLabel: string
+  footerimage: string
 }
 
 export interface CSSClasses {

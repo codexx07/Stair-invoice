@@ -66,5 +66,7 @@ export const initialInvoice: Invoice = {
   notesLabel: 'Notes',
   notes: '',
   termLabel: 'Authorised Signatory',
-  term: 'It was great doing business with you.',
+  term: './logo.svg',
+  footerLabel: '',
+  footerimage: '',
 }

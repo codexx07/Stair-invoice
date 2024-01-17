@@ -91,7 +91,8 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
         }
       } else if (name === 'logoWidth' && typeof value === 'number') {
         newInvoice[name] = value;
-      } else if (name !== 'logoWidth' && typeof value === 'string') {
+      } else if (name !== 'logoWidth' && name !== 'signWidth' && typeof value === 'string') {
+        // newInvoice[name] = value;
         newInvoice[name] = value;
       }
 
@@ -620,6 +621,19 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
         </View>
 
         <View className="mt-20" pdfMode={pdfMode}>
+        <View className="w-50" pdfMode={pdfMode}>
+            <EditableFileImage
+              className="logo"
+              placeholder="Signature"
+              value={invoice.sign}
+              width={invoice.signWidth}
+              pdfMode={pdfMode}
+              onChangeImage={(value) => handleChange('sign', value)}
+              onChangeWidth={(value) => handleChange('signWidth', value)}
+            />
+          </View>
+        </View>
+        <View className="mt-20" pdfMode={pdfMode}>
           <EditableInput
             className="bold w-100"
             value={invoice.termLabel}
@@ -633,6 +647,12 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
             onChange={(value) => handleChange('term', value)}
             pdfMode={pdfMode}
           />
+          <View pdfMode={pdfMode}>
+          <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+            <Text>{invoice.footerLabel}</Text>
+            <img src={invoice.footerimage} style={{ marginLeft: '10px' }} /> {/* adjust marginLeft as needed */}
+          </div>
+          </View>
         </View>
       </Page>
     </Document>
