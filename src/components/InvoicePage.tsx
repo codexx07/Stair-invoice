@@ -610,7 +610,7 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
                   pdfMode={pdfMode}
                 />
                 <Text className="right bold dark w-auto" pdfMode={pdfMode}>
-                  {(typeof subTotal !== 'undefined' && typeof saleTax !== 'undefined'
+                  {(typeof subTotal !== 'undefined' && typeof totalTax !== 'undefined'
                     ? subTotal + totalTax
                     : 0
                   ).toFixed(2)}
