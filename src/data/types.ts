@@ -12,6 +12,8 @@ export interface ProductLine {
 export interface Invoice {
   logo: string
   logoWidth: number
+  sign: string
+  signWidth: number
   title: string
   companyName: string
   name: string
@@ -27,6 +29,8 @@ export interface Invoice {
   clientAddress2: string
   clientCountry: string
   msmeRegNumber: string
+  iscnCode: string
+  sacnumber: string
 
   invoiceTitleLabel: string
   invoiceTitle: string
@@ -47,6 +51,11 @@ export interface Invoice {
 
   subTotalLabel: string
   taxLabel: string
+  advance: string
+  advanceamt: string
+  dueLabel: string
+  due: string
+
 
   totalLabel: string
   currency: string
@@ -55,6 +64,8 @@ export interface Invoice {
   notes: string
   termLabel: string
   term: string
+  footerLabel: string
+  footerimage: string
 }
 
 export interface CSSClasses {
