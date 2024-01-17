@@ -12,6 +12,7 @@ import Text from './Text'
 import { Font } from '@react-pdf/renderer'
 import Download from './DownloadPDF'
 import format from 'date-fns/format'
+import ValidationIndicator from './ValidationIndicator';
 import Footer from './Footer'; // Add this line at the top of your file
 
 Font.register({
@@ -252,32 +253,7 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
                 onBlur={() => setIsFocused(false)}
                 pdfMode={pdfMode}
               />
-              {!pdfMode && (msmeRegNumberValid ? 
-                <div style={{ 
-                  color: 'green', 
-                  backgroundColor: '#DFF2BF', 
-                  borderRadius: '50%', 
-                  width: '20px', 
-                  height: '20px', 
-                  display: 'flex', 
-                  justifyContent: 'center', 
-                  alignItems: 'center' 
-                }}>
-                  &#10003;
-                </div> :
-                isFocused && <div style={{ 
-                  color: 'red', 
-                  backgroundColor: '#FFD2D2', 
-                  borderRadius: '50%', 
-                  width: '20px', 
-                  height: '20px', 
-                  display: 'flex', 
-                  justifyContent: 'center', 
-                  alignItems: 'center' 
-                }}>
-                  &#10060;
-                </div>
-              )}
+              <ValidationIndicator isValid={msmeRegNumberValid} isFocused={isFocused} pdfMode={true} />
             </div>
             <div style={{ display: 'flex',flexDirection: 'row', alignItems: 'center' }}>
             <Text className="bold" pdfMode={pdfMode}>ISCN Code: </Text>
