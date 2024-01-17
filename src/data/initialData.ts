@@ -7,6 +7,7 @@ export const initialProductLine: ProductLine = {
   discount: '0.00',
   CGST: '0.00',
   SGST: '0.00',
+  IGST: '0.00',
 }
 
 export const initialInvoice: Invoice = {
@@ -36,6 +37,7 @@ export const initialInvoice: Invoice = {
   invoiceDate: '',
   invoiceDueDateLabel: 'Due Date',
   invoiceDueDate: '',
+  invoiceieLabel: 'Import/Export Charges', 
   productLineDescription: 'Item Description',
   productLineQuantity: 'Qty',
   productLineQuantityRate: 'Rate',
@@ -43,6 +45,7 @@ export const initialInvoice: Invoice = {
   productLineQuantityDiscount: 'D/C',
   productLineQuantityCGST: 'CGST',
   productLineQuantitySGST: 'SGST',
+  productLineQuantityIGST: 'IGST',
   productLines: [
     {
       description: 'Stair Merchandise',
@@ -51,6 +54,7 @@ export const initialInvoice: Invoice = {
       discount: '0.00',
       CGST: '0.00',
       SGST: '0.00',
+      IGST: '0.00',
     },
     { ...initialProductLine },
     { ...initialProductLine },
@@ -62,11 +66,13 @@ export const initialInvoice: Invoice = {
   advanceamt: '0.00',
   dueLabel: 'Due',
   due: '0.00',
+  ie: '0.00',
+  ieLabel: 'Import/Export Charges',
   currency: 'Rs',
   notesLabel: 'Notes',
   notes: '',
   termLabel: 'Authorised Signatory',
-  term: './logo.svg',
+  term: 'It was nice doing business with you. Hope to see you soon.',
   footerLabel: '',
   footerimage: '',
 }

@@ -7,6 +7,7 @@ export interface ProductLine {
   discount: string
   CGST: string
   SGST: string
+  IGST: string
 }
 
 export interface Invoice {
@@ -38,6 +39,8 @@ export interface Invoice {
   invoiceDate: string
   invoiceDueDateLabel: string
   invoiceDueDate: string
+  invoiceieLabel: string
+
 
   productLineDescription: string
   productLineQuantity: string
@@ -46,6 +49,7 @@ export interface Invoice {
   productLineQuantityDiscount: string
   productLineQuantityCGST: string
   productLineQuantitySGST: string
+  productLineQuantityIGST: string
 
   productLines: ProductLine[]
 
@@ -54,6 +58,8 @@ export interface Invoice {
   advance: string
   advanceamt: string
   dueLabel: string
+  ie: string
+  ieLabel: string
   due: string
 
 

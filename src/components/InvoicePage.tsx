@@ -159,8 +159,9 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
       const rateNumber = parseFloat(productLine.rate);
       const cgstNumber = parseFloat(productLine.CGST);
       const sgstNumber = parseFloat(productLine.SGST);
+      const igstNumber = parseFloat(productLine.IGST);
       const amount = quantityNumber && rateNumber ? quantityNumber * rateNumber : 0;
-      const tax = cgstNumber && sgstNumber ? cgstNumber + sgstNumber : 0;
+      const tax = cgstNumber + sgstNumber +igstNumber;
 
       subTotal += amount;
       totalTax += tax;
@@ -437,6 +438,14 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
               pdfMode={pdfMode}
             />
           </View>
+          <View className="w-17 p-4-8" pdfMode={pdfMode}>
+            <EditableInput
+              className="white bold right"
+              value={invoice.productLineQuantityIGST}
+              onChange={(value) => handleChange('productLineQuantityIGST', value)}
+              pdfMode={pdfMode}
+            />
+          </View>
           <View className="w-18 p-4-8" pdfMode={pdfMode}>
             <EditableInput
               className="white bold right"
@@ -499,6 +508,14 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
                   className="dark right"
                   value={productLine.SGST}
                   onChange={(value) => handleProductLineChange(i, 'SGST', value)}
+                  pdfMode={pdfMode}
+                />
+              </View>
+              <View className="w-17 p-4-8 pb-10" pdfMode={pdfMode}>
+                <EditableInput
+                  className="dark right"
+                  value={productLine.IGST}
+                  onChange={(value) => handleProductLineChange(i, 'IGST', value)}
                   pdfMode={pdfMode}
                 />
               </View>
@@ -567,6 +584,23 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
               <View className="w-50 p-5" pdfMode={pdfMode}>
                 <EditableInput
                   className="bold"
+                  value={invoice.ieLabel}
+                  onChange={(value) => handleChange('ieLabel', value)}
+                  pdfMode={pdfMode}
+                />
+              </View>
+              <View className="w-60" pdfMode={pdfMode}>
+                <EditableInput
+                  value={invoice.ie}
+                  onChange={(value) => handleChange('ie', value)}
+                  pdfMode={pdfMode}
+                />
+              </View>
+            </View>
+            <View className="flex mb-5" pdfMode={pdfMode}>
+              <View className="w-50 p-5" pdfMode={pdfMode}>
+                <EditableInput
+                  className="bold"
                   value={invoice.dueLabel}
                   onChange={(value) => handleChange('dueLabel', value)}
                   pdfMode={pdfMode}
@@ -580,6 +614,7 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
                 />
               </View>
             </View>
+            
             <View className="flex" pdfMode={pdfMode}>
               <View className="w-50 p-5" pdfMode={pdfMode}>
                 <EditableInput
