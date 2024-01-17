@@ -210,8 +210,6 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
               onChangeImage={(value) => handleChange('logo', value)}
               onChangeWidth={(value) => handleChange('logoWidth', value)}
             />
-            <div style={{ display: 'flex',flexDirection: 'row', alignItems: 'center' }}>
-            <Text className="bold" pdfMode={pdfMode}>Company Name: </Text>
             <EditableInput
               className="fs-20 bold"
               placeholder="Company Name"
@@ -219,7 +217,6 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
               onChange={(value) => handleChange('companyName', value)}
               pdfMode={pdfMode}
             />
-            </div>
             <div style={{ display: 'flex',flexDirection: 'row', alignItems: 'center' }}>
             <Text className="bold" pdfMode={pdfMode}>GSTIN: </Text>
             <EditableInput
@@ -585,6 +582,7 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
             <View className="flex" pdfMode={pdfMode}>
               <View className="w-50 p-5" pdfMode={pdfMode}>
                 <EditableInput
+                  className="bold"
                   value={invoice.subTotalLabel}
                   onChange={(value) => handleChange('subTotalLabel', value)}
                   pdfMode={pdfMode}
@@ -607,7 +605,7 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
               </View>
               <View className="w-60" pdfMode={pdfMode}>
                 <EditableInput
-                  className="bold"
+                  className="right bold dark"
                   value={invoice.advanceamt}
                   onChange={(value) => handleChange('advanceamt', value)}
                   pdfMode={pdfMode}
@@ -623,8 +621,9 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
                   pdfMode={pdfMode}
                 />
               </View>
-              <View className="w-60" pdfMode={pdfMode}>
+              <View className="w-50 p-5" pdfMode={pdfMode}>
                 <EditableInput
+                  className="dark bold right"
                   value={invoice.ie}
                   onChange={(value) => handleChange('ie', value)}
                   pdfMode={pdfMode}
@@ -640,7 +639,7 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
                   pdfMode={pdfMode}
                 />
               </View>
-              <View className="w-50 p-5" pdfMode={pdfMode}>
+              <View className="w-60" pdfMode={pdfMode}>
               <Text className="right bold dark" pdfMode={pdfMode}>
                   {due.toFixed(2)}
                 </Text>
@@ -650,6 +649,7 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
             <View className="flex" pdfMode={pdfMode}>
               <View className="w-50 p-5" pdfMode={pdfMode}>
                 <EditableInput
+                  className="bold"
                   value={invoice.taxLabel}
                   onChange={(value) => handleChange('taxLabel', value)}
                   pdfMode={pdfMode}
