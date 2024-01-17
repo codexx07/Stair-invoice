@@ -13,6 +13,7 @@ import Text from './Text'
 import { Font } from '@react-pdf/renderer'
 import Download from './DownloadPDF'
 import format from 'date-fns/format'
+import Footer from './Footer'; // Add this line at the top of your file
 
 Font.register({
   family: 'Nunito',
@@ -647,12 +648,7 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
             onChange={(value) => handleChange('term', value)}
             pdfMode={pdfMode}
           />
-          <View pdfMode={pdfMode}>
-          <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-            <Text>{invoice.footerLabel}</Text>
-            <img src={invoice.footerimage} style={{ marginLeft: '10px' }} /> {/* adjust marginLeft as needed */}
-          </div>
-          </View>
+          <Footer />
         </View>
       </Page>
     </Document>
