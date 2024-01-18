@@ -2,6 +2,7 @@ from flask import Flask, request
 import requests
 import uuid
 import json
+import time
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -42,21 +43,39 @@ def check_msme():
     # Extract request_id from the response
     response_data = json.loads(response.text)
     request_id = response_data.get('request_id')
+    print(request_id)
 
     # GET request
     get_url = f"https://eve.idfy.com/v3/tasks?request_id={request_id}"
 
+    # GET request
     get_response = requests.request("GET", get_url, headers=headers2)
+
+    # Wait for 10 seconds
+    # time.sleep(60)
+
+    # Parse the GET response
+    get_response_data = json.loads(get_response.text)
+    print(get_response_data)
+
+    # If the status is 'completed' or 'failed', process the response
+    if get_response_data[0]['status'] in ['completed', 'failed']:
+        # Check the status field and set isValid accordingly
+        isValid = get_response_data[0]['status'] == 'completed'
+
+        # Send isValid back to the client
+        return {'isValid': isValid}
 
     # Parse the GET response
     get_response_data = json.loads(get_response.text)
     print(get_response_data)
 
     # Check the status field and set isValid accordingly
-    isValid = get_response_data[0]['status'] == 'completed'
+    # isValid = get_response_data[0]['status'] == 'completed'
 
-    # Send isValid back to the client
-    return {'isValid': isValid}
+    # # Send isValid back to the client
+    # return {'isValid': isValid}
+    return '', 209
 
 if __name__ == '__main__':
     app.run(port=3001)
