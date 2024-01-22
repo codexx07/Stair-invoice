@@ -69,18 +69,10 @@ def check_msme():
     # GET request
     get_response = requests.request("GET", get_url, headers=headers2)
     get_response_data = json.loads(get_response.text)
+    # print(get_response_data[0]['status'])
+    time.sleep(10)
 
-    while get_response_data[0]['status'] in ['in_progress']:
-        get_response = requests.request("GET", get_url, headers=headers2)
-        get_response_data = json.loads(get_response.text)
-        print(get_response_data[0]['status'])
-
-        # If the status is 'completed' or 'failed', break the loop
-        if get_response_data[0]['status'] in ['completed', 'failed']:
-            break
-
-        # Delay for 1 second before the next request
-        # time.sleep(1)
+    print(get_response_data)
     
 
 

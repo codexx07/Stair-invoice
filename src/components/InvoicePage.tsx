@@ -71,7 +71,7 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
         newInvoice[name] = value;
 
         // Check if length of msmeRegNumber is 8
-        const pattern = /^UDYAM-MH-\d{2}-\d{7}$/;
+        const pattern = /^UDYAM-[A-Z]{2}-\d{2}-\d{7}$/;
         if (pattern.test(value)) {
           // Make API call to validate msmeRegNumber
           fetch(`http://localhost:3001/check-msme`, {
