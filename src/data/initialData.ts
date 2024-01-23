@@ -8,6 +8,8 @@ export const initialProductLine: ProductLine = {
   CGST: '0.00',
   SGST: '0.00',
   IGST: '0.00',
+  ISCN: '0.00',
+  SAC: '0.00',
 }
 
 export const initialInvoice: Invoice = {
@@ -46,6 +48,8 @@ export const initialInvoice: Invoice = {
   productLineQuantityCGST: 'CGST',
   productLineQuantitySGST: 'SGST',
   productLineQuantityIGST: 'IGST',
+  productLineQuantityISCN: 'ISCN',
+  productLineQuantitySAC: 'SAC',
   productLines: [
     {
       description: 'Stair Merchandise',
@@ -55,6 +59,8 @@ export const initialInvoice: Invoice = {
       CGST: '0.00',
       SGST: '0.00',
       IGST: '0.00',
+      ISCN: '0.00',
+      SAC: '0.00',
     },
     { ...initialProductLine },
     { ...initialProductLine },

@@ -4,6 +4,7 @@ from typing import Optional
 from uuid import uuid4
 from fastapi.middleware.cors import CORSMiddleware
 import httpx
+import asyncio
 
 app = FastAPI()
 
@@ -52,13 +53,31 @@ async def check_msme(item: Item):
 
             # Use the request_id from the POST response in the GET request URL
             request_id = response.json().get('request_id')
-            get_url = f"https://eve.idfy.com/v3/tasks/{request_id}"
-            get_response = await client.get(get_url, headers=headers2)
-            get_response.raise_for_status()
-            print(f"GET request ID: {request_id}")
-            print(f"GET response: {get_response.json()}")
+            get_url = f"https://eve.idfy.com/v3/tasks?request_id={request_id}"
 
-            return response.json()
+            while True:
+                get_response = await client.get(get_url, headers=headers2)
+                get_response.raise_for_status()
+                print(f"GET request ID: {request_id}")
+                print(f"GET response: {get_response.json()}")
+
+                # Check if the response is a list
+                if isinstance(get_response.json(), list):
+                    # Iterate over the list
+                    for item in get_response.json():
+                        # Check if the item is a dictionary and if it has a 'status' field
+                        if isinstance(item, dict) and 'status' in item:
+                            if item['status'] == 'completed':
+                                break
+                else:
+                    # If the response is not a list, handle it as before
+                    if get_response.json().get('status') == 'completed':
+                        break
+
+                # Wait for 5 seconds before the next request
+                await asyncio.sleep(5)
+
+            return get_response.json()
         except httpx.HTTPStatusError as exc:
             print(f"Error response {exc.response.status_code} while requesting {exc.request.url}.")
             raise HTTPException(status_code=500, detail="An error occurred while making the request")

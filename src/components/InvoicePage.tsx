@@ -256,24 +256,6 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
               />
               <ValidationIndicator isValid={msmeRegNumberValid} isFocused={isFocused} pdfMode={true} />
             </div>
-            <div style={{ display: 'flex',flexDirection: 'row', alignItems: 'center' }}>
-            <Text className="bold" pdfMode={pdfMode}>ISCN Code: </Text>
-            <EditableInput
-              placeholder="ISCN Code"
-              value={invoice.iscnCode}
-              onChange={(value) => handleChange('iscnCode', value)}
-              pdfMode={pdfMode}
-            />
-            </div>
-            <div style={{ display: 'flex',flexDirection: 'row', alignItems: 'center' }}>
-            <Text className="bold" pdfMode={pdfMode}>SAC Number: </Text>
-            <EditableInput
-              placeholder="SAC Number"
-              value={invoice.sacnumber}
-              onChange={(value) => handleChange('sacnumber', value)}
-              pdfMode={pdfMode}
-            />
-            </div>
             
           </View>
           <View className="w-50" pdfMode={pdfMode}>
@@ -455,6 +437,22 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
               pdfMode={pdfMode}
             />
           </View>
+          <View className="w-17 p-4-8" pdfMode={pdfMode}>
+            <EditableInput
+              className="white bold right"
+              value={invoice.productLineQuantityISCN}
+              onChange={(value) => handleChange('productLineQuantityISCN', value)}
+              pdfMode={pdfMode}
+            />
+          </View>
+          <View className="w-17 p-4-8" pdfMode={pdfMode}>
+            <EditableInput
+              className="white bold right"
+              value={invoice.productLineQuantitySAC}
+              onChange={(value) => handleChange('productLineQuantitySAC', value)}
+              pdfMode={pdfMode}
+            />
+          </View>
           <View className="w-18 p-4-8" pdfMode={pdfMode}>
             <EditableInput
               className="white bold right"
@@ -525,6 +523,22 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
                   className="dark right"
                   value={productLine.IGST}
                   onChange={(value) => handleProductLineChange(i, 'IGST', value)}
+                  pdfMode={pdfMode}
+                />
+              </View>
+              <View className="w-17 p-4-8 pb-10" pdfMode={pdfMode}>
+                <EditableInput
+                  className="dark right"
+                  value={productLine.ISCN}
+                  onChange={(value) => handleProductLineChange(i, 'ISCN', value)}
+                  pdfMode={pdfMode}
+                />
+              </View>
+              <View className="w-17 p-4-8 pb-10" pdfMode={pdfMode}>
+                <EditableInput
+                  className="dark right"
+                  value={productLine.SAC}
+                  onChange={(value) => handleProductLineChange(i, 'SAC', value)}
                   pdfMode={pdfMode}
                 />
               </View>

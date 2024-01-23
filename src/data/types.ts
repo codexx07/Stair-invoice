@@ -8,6 +8,8 @@ export interface ProductLine {
   CGST: string
   SGST: string
   IGST: string
+  ISCN: string
+  SAC: string
 }
 
 export interface Invoice {
@@ -50,6 +52,8 @@ export interface Invoice {
   productLineQuantityCGST: string
   productLineQuantitySGST: string
   productLineQuantityIGST: string
+  productLineQuantityISCN: string
+  productLineQuantitySAC: string
 
   productLines: ProductLine[]
 
