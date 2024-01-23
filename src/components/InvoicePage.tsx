@@ -12,7 +12,9 @@ import Text from './Text'
 import { Font } from '@react-pdf/renderer'
 import Download from './DownloadPDF'
 import format from 'date-fns/format'
-import Footer from './Footer'; // Add this line at the top of your file
+import ValidationIndicator from './ValidationIndicator';
+import Footer from './Footer'; 
+// import { render } from 'redocx';
 
 Font.register({
   family: 'Nunito',
@@ -70,7 +72,7 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
         newInvoice[name] = value;
 
         // Check if length of msmeRegNumber is 8
-        const pattern = /^UDYAM-MH-\d{2}-\d{7}$/;
+        const pattern = /^UDYAM-[A-Z]{2}-\d{2}-\d{7}$/;
         if (pattern.test(value)) {
           // Make API call to validate msmeRegNumber
           fetch(`http://localhost:3001/check-msme`, {
@@ -78,7 +80,7 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ msmeregnumber: value }),
+            body: JSON.stringify({ msmeRegNumber: value }),
           })
             .then(response => response.json())
             .then(data => {
@@ -252,50 +254,7 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
                 onBlur={() => setIsFocused(false)}
                 pdfMode={pdfMode}
               />
-              {!pdfMode && (msmeRegNumberValid ? 
-                <div style={{ 
-                  color: 'green', 
-                  backgroundColor: '#DFF2BF', 
-                  borderRadius: '50%', 
-                  width: '20px', 
-                  height: '20px', 
-                  display: 'flex', 
-                  justifyContent: 'center', 
-                  alignItems: 'center' 
-                }}>
-                  &#10003;
-                </div> :
-                isFocused && <div style={{ 
-                  color: 'red', 
-                  backgroundColor: '#FFD2D2', 
-                  borderRadius: '50%', 
-                  width: '20px', 
-                  height: '20px', 
-                  display: 'flex', 
-                  justifyContent: 'center', 
-                  alignItems: 'center' 
-                }}>
-                  &#10060;
-                </div>
-              )}
-            </div>
-            <div style={{ display: 'flex',flexDirection: 'row', alignItems: 'center' }}>
-            <Text className="bold" pdfMode={pdfMode}>ISCN Code: </Text>
-            <EditableInput
-              placeholder="ISCN Code"
-              value={invoice.iscnCode}
-              onChange={(value) => handleChange('iscnCode', value)}
-              pdfMode={pdfMode}
-            />
-            </div>
-            <div style={{ display: 'flex',flexDirection: 'row', alignItems: 'center' }}>
-            <Text className="bold" pdfMode={pdfMode}>SAC Number: </Text>
-            <EditableInput
-              placeholder="SAC Number"
-              value={invoice.sacnumber}
-              onChange={(value) => handleChange('sacnumber', value)}
-              pdfMode={pdfMode}
-            />
+              <ValidationIndicator isValid={msmeRegNumberValid} isFocused={isFocused} pdfMode={true} />
             </div>
             
           </View>
@@ -478,6 +437,22 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
               pdfMode={pdfMode}
             />
           </View>
+          <View className="w-17 p-4-8" pdfMode={pdfMode}>
+            <EditableInput
+              className="white bold right"
+              value={invoice.productLineQuantityISCN}
+              onChange={(value) => handleChange('productLineQuantityISCN', value)}
+              pdfMode={pdfMode}
+            />
+          </View>
+          <View className="w-17 p-4-8" pdfMode={pdfMode}>
+            <EditableInput
+              className="white bold right"
+              value={invoice.productLineQuantitySAC}
+              onChange={(value) => handleChange('productLineQuantitySAC', value)}
+              pdfMode={pdfMode}
+            />
+          </View>
           <View className="w-18 p-4-8" pdfMode={pdfMode}>
             <EditableInput
               className="white bold right"
@@ -548,6 +523,22 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
                   className="dark right"
                   value={productLine.IGST}
                   onChange={(value) => handleProductLineChange(i, 'IGST', value)}
+                  pdfMode={pdfMode}
+                />
+              </View>
+              <View className="w-17 p-4-8 pb-10" pdfMode={pdfMode}>
+                <EditableInput
+                  className="dark right"
+                  value={productLine.ISCN}
+                  onChange={(value) => handleProductLineChange(i, 'ISCN', value)}
+                  pdfMode={pdfMode}
+                />
+              </View>
+              <View className="w-17 p-4-8 pb-10" pdfMode={pdfMode}>
+                <EditableInput
+                  className="dark right"
+                  value={productLine.SAC}
+                  onChange={(value) => handleProductLineChange(i, 'SAC', value)}
                   pdfMode={pdfMode}
                 />
               </View>

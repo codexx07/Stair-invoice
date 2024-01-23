@@ -1,28 +1,40 @@
-from flask import Flask, request
-import requests
-import uuid
-import json
-from flask_cors import CORS
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
+from typing import Optional
+from uuid import uuid4
+from fastapi.middleware.cors import CORSMiddleware
+import httpx
+import asyncio
 
-app = Flask(__name__)
-CORS(app, origins=['http://localhost:3000'])
 
-@app.route('/check-msme', methods=['POST'])
-def check_msme():
-    # Extract msmeregnumber from the client's request
-    msmeRegNumber = request.json.get('msmeRegNumber')
+app = FastAPI()
 
-    # POST request
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
+)
+
+class Item(BaseModel):
+    msmeRegNumber: str
+
+class ResponseFoundException(Exception):
+    pass
+
+@app.post("/check-msme")
+async def check_msme(item: Item):
     url = "https://eve.idfy.com/v3/tasks/async/verify_with_source/udyam_aadhaar"
 
-    task_id = str(uuid.uuid4())
-    group_id = str(uuid.uuid4())
+    task_id = str(uuid4())
+    group_id = str(uuid4())
 
     payload = {
         "task_id": task_id,
         "group_id": group_id,
         "data": {
-            "uam_number": msmeRegNumber
+            "uam_number": item.msmeRegNumber
         }
     }
 
@@ -30,33 +42,47 @@ def check_msme():
         'api-key': '4c71388e-79d5-4c84-a111-a8f35a93605e',
         'account-id': '6d014c04f254/b95e280a-0c6c-47ac-b518-70b89cd82f88',
     }
-
-    headers2 ={
+    headers2 = {
         'api-key': '4c71388e-79d5-4c84-a111-a8f35a93605e',
         'account-id': '6d014c04f254/b95e280a-0c6c-47ac-b518-70b89cd82f88',
-        'Content-Type': 'application/json'
+        'content-type': 'application/json'
     }
 
-    response = requests.request("POST", url, headers=headers, json=payload)
+    async with httpx.AsyncClient() as client:
+        isValid = False
+        try:
+            response = await client.post(url, json=payload, headers=headers)
+            response.raise_for_status()
+            print(f"POST task ID: {task_id}")
+            print(f"POST response: {response.json()}")
 
-    # Extract request_id from the response
-    response_data = json.loads(response.text)
-    request_id = response_data.get('request_id')
+            # Use the request_id from the POST response in the GET request URL
+            request_id = response.json().get('request_id')
+            get_url = f"https://eve.idfy.com/v3/tasks?request_id={request_id}"
 
-    # GET request
-    get_url = f"https://eve.idfy.com/v3/tasks?request_id={request_id}"
+            while True:
+                get_response = await client.get(get_url, headers=headers2)
+                get_response.raise_for_status()
+                print(f"GET request ID: {request_id}")
+                print(f"GET response: {get_response.json()}")
 
-    get_response = requests.request("GET", get_url, headers=headers2)
+                if isinstance(get_response.json(), list):
+                    print("Found a list")
+                    for item in get_response.json():
+                        if isinstance(item, dict) and 'result' in item:
+                            print("Found a result")
+                            isValid = True
+                            print("Isvalid set as True")
+                            raise ResponseFoundException
+                else:
+                    if 'result' in get_response.json():
+                        print("Found a result")
+                        isValid = True
+                        raise ResponseFoundException
 
-    # Parse the GET response
-    get_response_data = json.loads(get_response.text)
-    print(get_response_data)
+                # Wait for 5 seconds before the next request
+                await asyncio.sleep(5)
+        except ResponseFoundException:
+            pass
 
-    # Check the status field and set isValid accordingly
-    isValid = get_response_data[0]['status'] == 'completed'
-
-    # Send isValid back to the client
-    return {'isValid': isValid}
-
-if __name__ == '__main__':
-    app.run(port=3001)
+        return {"isValid": isValid}
