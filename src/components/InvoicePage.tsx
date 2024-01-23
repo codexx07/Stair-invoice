@@ -80,7 +80,7 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ msmeregnumber: value }),
+            body: JSON.stringify({ msmeRegNumber: value }),
           })
             .then(response => response.json())
             .then(data => {
