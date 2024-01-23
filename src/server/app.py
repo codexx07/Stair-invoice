@@ -6,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import httpx
 import asyncio
 
+
 app = FastAPI()
 
 app.add_middleware(
@@ -18,6 +19,9 @@ app.add_middleware(
 
 class Item(BaseModel):
     msmeRegNumber: str
+
+class ResponseFoundException(Exception):
+    pass
 
 @app.post("/check-msme")
 async def check_msme(item: Item):
@@ -45,10 +49,11 @@ async def check_msme(item: Item):
     }
 
     async with httpx.AsyncClient() as client:
+        isValid = False
         try:
             response = await client.post(url, json=payload, headers=headers)
             response.raise_for_status()
-            print(f"POST request ID: {task_id}")
+            print(f"POST task ID: {task_id}")
             print(f"POST response: {response.json()}")
 
             # Use the request_id from the POST response in the GET request URL
@@ -61,23 +66,23 @@ async def check_msme(item: Item):
                 print(f"GET request ID: {request_id}")
                 print(f"GET response: {get_response.json()}")
 
-                # Check if the response is a list
                 if isinstance(get_response.json(), list):
-                    # Iterate over the list
+                    print("Found a list")
                     for item in get_response.json():
-                        # Check if the item is a dictionary and if it has a 'status' field
-                        if isinstance(item, dict) and 'status' in item:
-                            if item['status'] == 'completed':
-                                break
+                        if isinstance(item, dict) and 'result' in item:
+                            print("Found a result")
+                            isValid = True
+                            print("Isvalid set as True")
+                            raise ResponseFoundException
                 else:
-                    # If the response is not a list, handle it as before
-                    if get_response.json().get('status') == 'completed':
-                        break
+                    if 'result' in get_response.json():
+                        print("Found a result")
+                        isValid = True
+                        raise ResponseFoundException
 
                 # Wait for 5 seconds before the next request
                 await asyncio.sleep(5)
+        except ResponseFoundException:
+            pass
 
-            return get_response.json()
-        except httpx.HTTPStatusError as exc:
-            print(f"Error response {exc.response.status_code} while requesting {exc.request.url}.")
-            raise HTTPException(status_code=500, detail="An error occurred while making the request")
+        return {"isValid": isValid}
