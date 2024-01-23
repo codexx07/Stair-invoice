@@ -13,7 +13,8 @@ import { Font } from '@react-pdf/renderer'
 import Download from './DownloadPDF'
 import format from 'date-fns/format'
 import ValidationIndicator from './ValidationIndicator';
-import Footer from './Footer'; // Add this line at the top of your file
+import Footer from './Footer'; 
+// import { render } from 'redocx';
 
 Font.register({
   family: 'Nunito',
