@@ -32,6 +32,10 @@ async def upload_pdf(file: UploadFile = File(...)):
 
     return {"filename": file.filename}
 
+    s3.upload_file(file.filename, 'my-bucket', file.filename)
+
+    return {"filename": file.filename}
+
 @app.post("/check-msme")
 async def check_msme(item: Item):
     url = "https://eve.idfy.com/v3/tasks/async/verify_with_source/udyam_aadhaar"

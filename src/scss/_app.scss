@@ -63,6 +63,16 @@
   }
 }
 
+.server-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: transparent;
+  border: 0;
+}
+
 .image {
   position: relative;
   display: inline-block;
