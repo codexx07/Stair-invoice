@@ -5,6 +5,8 @@ from uuid import uuid4
 from fastapi.middleware.cors import CORSMiddleware
 import httpx
 import asyncio
+from fastapi import FastAPI, UploadFile, File
+import shutil
 
 
 app = FastAPI()
@@ -22,6 +24,13 @@ class Item(BaseModel):
 
 class ResponseFoundException(Exception):
     pass
+
+@app.post("/upload-pdf")
+async def upload_pdf(file: UploadFile = File(...)):
+    with open(f"{file.filename}", "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+
+    return {"filename": file.filename}
 
 @app.post("/check-msme")
 async def check_msme(item: Item):
