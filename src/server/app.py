@@ -33,9 +33,11 @@ async def upload_pdf(file: UploadFile = File(...)):
     with open(f"{file.filename}", "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
 
-    s3.upload_file(file.filename, 'stairdigital', file.filename)
+    s3.upload_file(file.filename, 'stairdigital', file.filename, ExtraArgs={'ACL':'public-read'})
 
-    return {"filename": file.filename, "message": "File successfully uploaded to S3 bucket"}
+    url = f"https://stairdigital.s3.ap-south-1.amazonaws.com/{file.filename}"
+
+    return {"filename": file.filename, "url": url, "message": "File successfully uploaded to S3 bucket"}
 
 @app.post("/check-msme")
 async def check_msme(item: Item):

@@ -23,7 +23,7 @@ const Download: FC<Props> = ({ data }) => {
   const handleDownload = async () => {
     const blob = await pdf(<InvoicePage pdfMode={true} data={data} />).toBlob()
     const formData = new FormData()
-    formData.append('file', blob, `${data.invoiceTitle ? data.invoiceTitle.toLowerCase() : 'invoice'}.pdf`)
+    formData.append('file', blob, `${data.invoiceTitle ? data.invoiceTitle.toLowerCase() : 'invoice'}_${Date.now()}.pdf`)
     
     const response = await fetch('http://localhost:3001/upload-pdf', {
       method: 'POST',
@@ -40,7 +40,7 @@ const Download: FC<Props> = ({ data }) => {
     // Create a link element with the URL and a download attribute
     const link = document.createElement('a')
     link.href = url
-    link.download = `${data.invoiceTitle ? data.invoiceTitle.toLowerCase() : 'invoice'}.pdf`
+    link.download = `${data.invoiceTitle ? data.invoiceTitle.toLowerCase() : 'invoice'}_${Date.now()}.pdf`
 
     // Append the link to the body
     document.body.appendChild(link)
