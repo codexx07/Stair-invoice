@@ -5,6 +5,7 @@ from uuid import uuid4
 from fastapi.middleware.cors import CORSMiddleware
 import httpx
 import asyncio
+import boto3
 from fastapi import FastAPI, UploadFile, File
 import shutil
 
@@ -25,16 +26,16 @@ class Item(BaseModel):
 class ResponseFoundException(Exception):
     pass
 
+s3 = boto3.client('s3')
+
 @app.post("/upload-pdf")
 async def upload_pdf(file: UploadFile = File(...)):
     with open(f"{file.filename}", "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
 
-    return {"filename": file.filename}
+    s3.upload_file(file.filename, 'stairdigital', file.filename)
 
-    s3.upload_file(file.filename, 'my-bucket', file.filename)
-
-    return {"filename": file.filename}
+    return {"filename": file.filename, "message": "File successfully uploaded to S3 bucket"}
 
 @app.post("/check-msme")
 async def check_msme(item: Item):
