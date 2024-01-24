@@ -5,6 +5,9 @@ from uuid import uuid4
 from fastapi.middleware.cors import CORSMiddleware
 import httpx
 import asyncio
+import boto3
+from fastapi import FastAPI, UploadFile, File
+import shutil
 
 
 app = FastAPI()
@@ -22,6 +25,32 @@ class Item(BaseModel):
 
 class ResponseFoundException(Exception):
     pass
+
+s3 = boto3.client('s3')
+
+last_uploaded_file_url = None
+
+@app.post("/upload-pdf")
+async def upload_pdf(file: UploadFile = File(...)):
+    global last_uploaded_file_url
+
+    with open(f"{file.filename}", "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+
+    s3.upload_file(file.filename, 'stairdigital', file.filename, ExtraArgs={'ACL':'public-read'})
+
+    last_uploaded_file_url = f"https://stairdigital.s3.ap-south-1.amazonaws.com/{file.filename}"
+
+    return {"filename": file.filename, "message": "File successfully uploaded to S3 bucket"}
+
+@app.get("/get-last-uploaded-file-url")
+async def get_last_uploaded_file_url():
+    global last_uploaded_file_url
+
+    if last_uploaded_file_url is None:
+        return {"error": "No file has been uploaded yet"}
+
+    return {"url": last_uploaded_file_url}
 
 @app.post("/check-msme")
 async def check_msme(item: Item):
