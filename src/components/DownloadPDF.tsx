@@ -2,6 +2,7 @@ import React, { FC, useEffect, useState } from 'react'
 import { pdf } from '@react-pdf/renderer'
 import { Invoice } from '../data/types'
 import InvoicePage from './InvoicePage'
+import { handleFileUpload } from './InvoicePage'
 
 interface Props {
   data: Invoice
@@ -27,28 +28,30 @@ const Download: FC<Props> = ({ data }) => {
     
     const response = await fetch('http://localhost:3001/upload-pdf', {
       method: 'POST',
-      body: formData,
+      body: formData
     })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
 
-    if (!response.ok) {
-      throw new Error('Network response was not ok')
-    }
+        // Call handleFileUpload after the POST request is completed
+        handleFileUpload();
+      })
+      .catch(error => {
+        console.error('There has been a problem with your fetch operation:', error);
+      });
 
-    // Create a URL from the Blob
     const url = URL.createObjectURL(blob)
 
-    // Create a link element with the URL and a download attribute
     const link = document.createElement('a')
     link.href = url
     link.download = `${data.invoiceTitle ? data.invoiceTitle.toLowerCase() : 'invoice'}_${Date.now()}.pdf`
 
-    // Append the link to the body
     document.body.appendChild(link)
 
-    // Programmatically click the link to start the download
     link.click()
 
-    // Remove the link from the body
     document.body.removeChild(link)
   }
 

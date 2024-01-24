@@ -30,6 +30,21 @@ interface Props {
   onChange?: (invoice: Invoice) => void
 }
 
+
+const handleFileUpload = async () => {
+  fetch('http://localhost:3001/get-last-uploaded-file-url', {
+    method: 'GET',
+  })
+    .then(response => response.json())
+    .then(data => {
+      // Display a prompt with the URL
+      window.prompt("Here is the URL of the uploaded file:", data.url);
+    })
+    .catch(error => {
+      console.error(error);
+    });
+}
+
 const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
   const [invoice, setInvoice] = useState<Invoice>(data ? { ...data } : { ...initialInvoice })
   const [subTotal, setSubTotal] = useState<number>()
@@ -714,4 +729,5 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
   )
 }
 
+export { handleFileUpload };
 export default InvoicePage
