@@ -158,12 +158,15 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
     setInvoice({ ...invoice, productLines })
   }
 
-  const calculateAmount = (quantity: string, rate: string) => {
+  const calculateAmount = (quantity: string, rate: string, discount: string) => {
     const quantityNumber = parseFloat(quantity)
     const rateNumber = parseFloat(rate)
+    const discountNumber = parseFloat(discount)
+    const discountNo = discountNumber * quantityNumber;
     const amount = quantityNumber && rateNumber ? quantityNumber * rateNumber : 0
+    const discountedAmount = amount - discountNo
 
-    return amount.toFixed(2)
+    return discountedAmount.toFixed(2)
   }
 
   useEffect(() => {
@@ -178,9 +181,12 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
         const sgstNumber = parseFloat(productLine.SGST);
         const igstNumber = parseFloat(productLine.IGST);
         const amount = quantityNumber && rateNumber ? quantityNumber * rateNumber : 0;
+        const discountNumber = parseFloat(productLine.discount)
+        const discountNo = discountNumber * quantityNumber;
+        const discountedAmount = amount - discountNo
         const tax = cgstNumber + sgstNumber +igstNumber;
 
-        subTotal += amount;
+        subTotal += discountedAmount;
         totalTax += tax;
       });
 
@@ -559,7 +565,7 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
               </View>
               <View className="w-18 p-4-8 pb-10" pdfMode={pdfMode}>
                 <Text className="dark right" pdfMode={pdfMode}>
-                  {calculateAmount(productLine.quantity, productLine.rate)}
+                  {calculateAmount(productLine.quantity, productLine.rate, productLine.discount)}
                 </Text>
               </View>
               {!pdfMode && (
