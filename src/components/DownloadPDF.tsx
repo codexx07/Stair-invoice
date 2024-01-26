@@ -37,7 +37,7 @@ const Download: FC<Props> = ({ data, handleFileUpload }) => {
   return (
     <div className={'download-pdf ' + (!show ? 'loading' : '')} title="Save PDF">
       {show && (
-        <button onClick={sendToServer}>
+        <button className="server-button" onClick={sendToServer}>
           <PDFDownloadLink
             document={<InvoicePage pdfMode={true} data={data} />}
             fileName={`${data.invoiceTitle ? data.invoiceTitle.toLowerCase() : 'invoice'}_${Date.now()}.pdf`}
