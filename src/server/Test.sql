@@ -1,7 +1,0 @@
-USE my_database;
-CREATE TABLE IF NOT EXISTS MSME2(reg_Number VARCHAR(255), Company_Name VARCHAR(255));
-
-SELECT * FROM MSME2;
-
-
-
