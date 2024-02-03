@@ -26,7 +26,7 @@ const Download: FC<Props> = ({ data, handleFileUpload }) => {
     const formData = new FormData()
     formData.append('file', blob, `${data.invoiceTitle ? data.invoiceTitle.toLowerCase() : 'invoice'}_${Date.now()}.pdf`)
 
-    await fetch('http://localhost:3001/upload-pdf', {
+    await fetch('http://13.235.18.77:8000/upload-pdf', {
       method: 'POST',
       body: formData
     })

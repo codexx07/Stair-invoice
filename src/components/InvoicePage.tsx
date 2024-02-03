@@ -32,7 +32,7 @@ interface Props {
 
 
 const handleFileUpload = async () => {
-  fetch('http://localhost:3001/get-last-uploaded-file-url', {
+  fetch('http://13.235.18.77:8000/get-last-uploaded-file-url', {
     method: 'GET',
   })
     .then(response => response.json())
@@ -90,7 +90,7 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
         const pattern = /^UDYAM-[A-Z]{2}-\d{2}-\d{7}$/;
         if (pattern.test(value)) {
           // Make API call to validate msmeRegNumber
-          fetch(`http://localhost:3001/check-msme`, {
+          fetch(`http://13.235.18.77:8000/check-msme`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
